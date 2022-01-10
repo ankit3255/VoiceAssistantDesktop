@@ -21,35 +21,35 @@ voices = engine.getProperty('voices')
 engine.setProperty('voice', voices[len(voices) - 1].id)
 
 rate = engine.getProperty('rate')
-engine.setProperty('rate', rate-62)     # Slows down the speaking speed of the engine voice.
+engine.setProperty('rate', rate-62)    
 
 def speak(audio):
-    print("Nova: "+audio)
+    print("Alex: "+audio)
     engine.say(audio)
     engine.runAndWait()
 
 def command():
     cmd = spr.Recognizer()
     with spr.Microphone() as source:
-        cmd.adjust_for_ambient_noise(source)    # Adjusts the level to recieve voice even in case of noise in surroundings
-        print('Listening..')
+        cmd.adjust_for_ambient_noise(source)  
+        print('Hearing..')
         audio = cmd.listen(source)
         try:
             query = cmd.recognize_google(audio,language='en-in')
             print('User: '+query+'\n')
         except spr.UnknownValueError:
-            speak('Sorry ! I did not get that. Could you please type it out ?')
+            speak('Sorry could not get that. Could you please type that ?')
             query = str(input('Command: '))
     return query
 
 
 def greeting():
-    currentH = int(datetime.datetime.now().hour)
-    if currentH >= 0 and currentH < 12 :
+    cH = int(datetime.datetime.now().hour)
+    if cH >= 0 and cH < 12 :
         speak('Good Morning')
-    if currentH >= 12 and currentH < 17 :
+    if cH >= 12 and cH < 17 :
         speak('Good Afternoon')
-    if currentH >= 17 and currentH != 0 :
+    if cH >= 17 and cH < 24 :
         speak('Good Evening')
 
 
@@ -69,7 +69,7 @@ def find(name, path):
 
 
 def searchOnGoogle(query, outputList):
-    speak('The top five search results from Google  are listed below.')
+    speak('The top 5 search results from Google are..')
     for output in search(query, tld="co.in", num=10, stop=5, pause=2):
         print(output)
         outputList.append(output)
@@ -77,14 +77,14 @@ def searchOnGoogle(query, outputList):
 
 
 def openLink(outputList):
-    speak("Here's the first link for you.")
+    speak("Here's the 1st link.")
     webbrowser.open(outputList[0])
 
 
 def playOnYoutube(query_string):
     query_string = urllib.parse.urlencode({"search_query" : query})
     search_string = str("http://www.youtube.com/results?" + query_string)
-    speak("Here's what you asked for. Enjoy!")
+    speak("Here's what you asked for.")
     webbrowser.open_new_tab(search_string)
 
 
@@ -141,7 +141,7 @@ def getCompleteInfo(word):
 
 
 greeting()
-speak('Nova here.')
+speak('Alex here.')
 speak('What would you like me to do for you ?')
 
 
@@ -202,6 +202,6 @@ if __name__ == '__main__':
         if 'joke' in query:
             tellAJoke()
         
-        if 'that would be all' in query or 'that is it' in query or 'bye Nova' in query:
+        if 'that would be all' in query or 'that is it' in query or 'bye Alex' in query:
             speak('Alright. Have a nice day')
             sys.exit()
